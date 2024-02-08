@@ -1,10 +1,10 @@
 # Elsa Aspire
-This sample application demonstrates a configuration of Elsa Workflows using .NET Aspire.
+This sample application demonstrates a configuration of [Elsa Workflows](https://github.com/elsa-workflows/elsa-core) using .NET Aspire.
 
 The application consists of:
 
-- Elsa Studio
-- Elsa Server Running in two node using `MassTransitDispatcher` for distributed management
+- [Elsa Studio](https://github.com/elsa-workflows/elsa-studio)
+- [Elsa Server](https://github.com/elsa-workflows/elsa-core) Running in two node using `MassTransitDispatcher` for distributed management
 - PostgreSQL database for persistence
 - RabbitMQ for server node communication
 
