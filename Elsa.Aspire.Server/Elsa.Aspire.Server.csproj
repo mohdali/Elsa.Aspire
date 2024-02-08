@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Elsa" Version="3.1.0-preview.1048" />
+		<PackageReference Include="Elsa.EntityFrameworkCore.PostgreSql" Version="3.1.0-preview.1048" />
+		<PackageReference Include="Elsa.MassTransit.RabbitMq" Version="3.1.0-preview.1048" />
+		<PackageReference Include="Elsa.Quartz.EntityFrameworkCore.PostgreSql" Version="3.1.0-preview.1048" />
+		<PackageReference Include="Elsa.Workflows.Api" Version="3.1.0-preview.1048" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+		<PackageReference Include="AppAny.Quartz.EntityFrameworkCore.Migrations.PostgreSQL" Version="0.5.0.0" />
+		<PackageReference Include="AppAny.Quartz.EntityFrameworkCore.Migrations" Version="0.5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Elsa.Aspire.ServiceDefaults\Elsa.Aspire.ServiceDefaults.csproj" />
+	</ItemGroup>
+
+</Project>
