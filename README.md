@@ -1,5 +1,5 @@
 # Elsa Aspire
-This sample application demonstrates a configuration of [Elsa Workflows](https://github.com/elsa-workflows/elsa-core) using .NET Aspire.
+This sample application demonstrates a configuration of [Elsa Workflows](https://v3.elsaworkflows.io/) using .NET Aspire.
 
 The application consists of:
 
