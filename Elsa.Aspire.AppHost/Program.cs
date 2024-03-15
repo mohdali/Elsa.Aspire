@@ -1,10 +1,10 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgresdb = builder.AddPostgresContainer("pg")    
-    .WithVolumeMount("postgres-data", "/var/lib/postgresql/data", VolumeMountType.Named)
+var postgresdb = builder.AddPostgres("pg")    
+    .WithVolumeMount("postgres-data", "/var/lib/postgresql/data")
     .AddDatabase("elsadb");
 
-var messaging = builder.AddRabbitMQContainer("messaging");
+var messaging = builder.AddRabbitMQ("messaging");
 
 var server = builder.AddProject<Projects.Elsa_Aspire_Server>("elsaserver")
         .WithReplicas(2)
