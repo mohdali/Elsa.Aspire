@@ -2,6 +2,7 @@ using Elsa.EntityFrameworkCore.Extensions;
 using Elsa.EntityFrameworkCore.Modules.Management;
 using Elsa.EntityFrameworkCore.Modules.Runtime;
 using Elsa.Extensions;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +43,10 @@ builder.Services.AddElsa(elsa =>
     elsa.UseJavaScript();
 
     // Enable HTTP activities.
-    elsa.UseHttp();
+    elsa.UseHttp(http =>
+    {
+        http.ConfigureHttpOptions = options => builder.Configuration.GetSection("Http").Bind(options);
+    });
 
     // Use timer activities.
     elsa.UseScheduling(scheduling => scheduling.UseQuartzScheduler());
