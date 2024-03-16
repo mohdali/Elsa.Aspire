@@ -1,6 +1,8 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgresdb = builder.AddPostgres("pg")    
+var postgrespw = builder.Configuration["postgrespassword"];
+
+var postgresdb = builder.AddPostgres("pg", password: postgrespw)
     .WithVolumeMount("postgres-data", "/var/lib/postgresql/data")
     .AddDatabase("elsadb");
 

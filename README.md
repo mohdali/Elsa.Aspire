@@ -8,5 +8,9 @@ The application consists of:
 - PostgreSQL database for persistence
 - RabbitMQ for server node communication
 
-//TODOS
-- Configure YARP for HTTP Activities and SignalR Sticky Sessions
+
+With the latest Aspire 4 preview, database passwords need to be consistent between appl launches. Set the Postgres password in the secrets as below.
+(See [Persist data using volumes](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/persist-data-volumes))
+```
+dotnet user-secrets set postgrespassword <password>
+```
