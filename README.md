@@ -9,7 +9,7 @@ The application consists of:
 - RabbitMQ for server node communication
 
 
-With the latest Aspire 4 preview, database passwords need to be consistent between appl launches. Set the Postgres password in the secrets as below.
+With the latest Aspire 4 preview, database passwords need to be consistent between app launches. Set the Postgres password in the secrets as below.
 (See [Persist data using volumes](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/persist-data-volumes))
 ```
 dotnet user-secrets set postgrespassword <password>
