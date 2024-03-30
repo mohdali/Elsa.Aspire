@@ -15,6 +15,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
 		<PackageReference Include="AppAny.Quartz.EntityFrameworkCore.Migrations.PostgreSQL" Version="0.5.0.0" />
 		<PackageReference Include="AppAny.Quartz.EntityFrameworkCore.Migrations" Version="0.5.0.0" />
+		<PackageReference Include="DistributedLock.Postgres" Version="1.0.5"/>
 	</ItemGroup>
 
 	<ItemGroup>

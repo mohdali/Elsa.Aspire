@@ -2,6 +2,7 @@ using Elsa.EntityFrameworkCore.Extensions;
 using Elsa.EntityFrameworkCore.Modules.Management;
 using Elsa.EntityFrameworkCore.Modules.Runtime;
 using Elsa.Extensions;
+using Medallion.Threading.Postgres;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,14 @@ builder.Services.AddElsa(elsa =>
             ef.UsePostgreSql(builder.Configuration.GetConnectionString("elsadb")!));
 
         runtime.UseMassTransitDispatcher();
+
+        runtime.DistributedLockProvider = _ =>
+            new PostgresDistributedSynchronizationProvider(builder.Configuration.GetConnectionString("elsadb")!, 
+                options =>
+                {
+                    options.KeepaliveCadence(TimeSpan.FromMinutes(5));
+                    options.UseMultiplexing();
+                });
     });
 
     // Default Identity features for authentication/authorization.
