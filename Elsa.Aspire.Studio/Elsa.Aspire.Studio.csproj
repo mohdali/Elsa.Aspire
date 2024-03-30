@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elsa.Studio" Version="3.0.5" />
-    <PackageReference Include="Elsa.Studio.Core.BlazorServer" Version="3.0.5" />
-    <PackageReference Include="Elsa.Studio.Login.BlazorServer" Version="3.0.5" />
+    <PackageReference Include="Elsa.Studio" Version="3.1.0" />
+    <PackageReference Include="Elsa.Studio.Core.BlazorServer" Version="3.1.0" />
+    <PackageReference Include="Elsa.Studio.Login.BlazorServer" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.2" />
   </ItemGroup>
 
