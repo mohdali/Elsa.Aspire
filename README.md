@@ -14,3 +14,15 @@ With the latest Aspire 4 preview, database passwords need to be consistent betwe
 ```
 dotnet user-secrets set postgrespassword <password>
 ```
+
+[Aspirate](https://github.com/prom3theu5/aspirational-manifests) can be used for Kubernetes deployment. A customized manifest is included for easy deployment.
+
+Inside `Elsa.Aspire.AppHost` Porject, run below command to generate deployment files:
+
+```
+aspirate generate -m .\manifest.json
+```
+Followed by:
+```
+aspirate apply
+```
