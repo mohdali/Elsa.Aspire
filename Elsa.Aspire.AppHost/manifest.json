@@ -1,0 +1,105 @@
+{
+  "resources": {
+    "pg": {
+      "type": "container.v0",
+      "connectionString": "Host={pg.bindings.tcp.host};Port={pg.bindings.tcp.port};Username=postgres;Password={pg.inputs.password};Database=elsadb",
+      "image": "postgres:16.2",
+      "env": {
+        "POSTGRES_HOST_AUTH_METHOD": "scram-sha-256",
+        "POSTGRES_INITDB_ARGS": "--auth-host=scram-sha-256 --auth-local=scram-sha-256",
+        "POSTGRES_PASSWORD": "{pg.inputs.password}"
+      },
+      "bindings": {
+        "tcp": {
+          "scheme": "tcp",
+          "protocol": "tcp",
+          "transport": "tcp",
+          "containerPort": 5432
+        }
+      },
+      "inputs": {
+        "password": {
+          "type": "string",
+          "secret": true,
+          "default": {
+            "generate": {
+              "minLength": 10
+            }
+          }
+        }
+      }
+    },
+    "messaging": {
+      "type": "container.v0",
+      "connectionString": "amqp://guest:{messaging.inputs.password}@{messaging.bindings.tcp.host}:{messaging.bindings.tcp.port}",
+      "image": "rabbitmq:3",
+      "env": {
+        "RABBITMQ_DEFAULT_USER": "guest",
+        "RABBITMQ_DEFAULT_PASS": "{messaging.inputs.password}"
+      },
+      "bindings": {
+        "tcp": {
+          "scheme": "tcp",
+          "protocol": "tcp",
+          "transport": "tcp",
+          "containerPort": 5672
+        }
+      },
+      "inputs": {
+        "password": {
+          "type": "string",
+          "secret": true,
+          "default": {
+            "generate": {
+              "minLength": 10
+            }
+          }
+        }
+      }
+    },
+    "elsaserver": {
+      "type": "project.v0",
+      "path": "../Elsa.Aspire.Server/Elsa.Aspire.Server.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "ConnectionStrings__elsadb": "{pg.connectionString}",
+        "ConnectionStrings__messaging": "{messaging.connectionString}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http"
+        }
+      }
+    },
+    "elsastudio": {
+      "type": "project.v0",
+      "path": "../Elsa.Aspire.Studio/Elsa.Aspire.Studio.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "services__elsaserver__0": "{elsaserver.bindings.http.url}",
+        "services__elsaserver__1": "{elsaserver.bindings.https.url}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http"
+        }
+      }
+    }
+  }
+}
