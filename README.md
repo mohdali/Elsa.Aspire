@@ -13,7 +13,7 @@ The application consists of:
 Inside `Elsa.Aspire.AppHost` Porject, run below command to generate deployment files:
 
 ```
-aspirate generate -m .\manifest.json
+aspirate generate
 ```
 Followed by:
 ```
