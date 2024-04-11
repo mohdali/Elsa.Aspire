@@ -1,6 +1,10 @@
+using Aspire.Hosting;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgresdb = builder.AddPostgres("pg")
+var pgpassword = builder.AddParameter("postgrespassword", true);
+
+var postgresdb = builder.AddPostgres("pg", password: pgpassword)
     .WithVolume("postgres-data", "/var/lib/postgresql/data")
     .AddDatabase("elsadb");
 
