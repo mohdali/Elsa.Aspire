@@ -1,14 +1,10 @@
-using Elsa.Aspire.AppHost;
-
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgrespw = builder.Configuration["postgrespassword"];
-
-var postgresdb = builder.AddPostgres("pg", password: postgrespw)
-    .WithVolumeMount("postgres-data", "/var/lib/postgresql/data")
+var postgresdb = builder.AddPostgres("pg")
+    .WithVolume("postgres-data", "/var/lib/postgresql/data")
     .AddDatabase("elsadb");
 
-var messaging = builder.AddRabbitMQ("messaging", "password");
+var messaging = builder.AddRabbitMQ("messaging");
 
 var server = builder.AddProject<Projects.Elsa_Aspire_Server>("elsaserver")
         .WithReplicas(2)
