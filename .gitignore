@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 #aspirate
 aspirate*
+
+#manifest
+manifest.json
