@@ -8,13 +8,12 @@ The application consists of:
 - PostgreSQL database for persistence
 - RabbitMQ for server node communication
 
-[Aspirate](https://github.com/prom3theu5/aspirational-manifests) can be used for Kubernetes deployment. A customized manifest is included for easy deployment.
-
 With the latest Aspire preview, database passwords need to be consistent between app launches. Set the Postgres password in the secrets as below.
 (See [Persist data using volumes](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/persist-data-volumes))
 ```
 dotnet user-secrets set "Parameters:postgrespassword" <password>
 ```
+[Aspirate](https://github.com/prom3theu5/aspirational-manifests) can be used for Kubernetes deployment. A customized manifest is included for easy deployment.
 
 Inside `Elsa.Aspire.AppHost` Porject, run below command to generate deployment files:
 
