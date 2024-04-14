@@ -2,10 +2,8 @@ using Aspire.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var pgpassword = builder.AddParameter("postgrespassword", true);
-
-var postgresdb = builder.AddPostgres("pg", password: pgpassword)
-    .WithVolume("postgres-data", "/var/lib/postgresql/data")
+var postgresdb = builder.AddPostgres("pg")
+    .WithDataVolume()
     .AddDatabase("elsadb");
 
 var messaging = builder.AddRabbitMQ("messaging");

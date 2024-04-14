@@ -11,7 +11,7 @@ The application consists of:
 With the latest Aspire preview, database passwords need to be consistent between app launches. Set the Postgres password in the secrets as below.
 (See [Persist data using volumes](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/persist-data-volumes))
 ```
-dotnet user-secrets set "Parameters:postgrespassword" <password>
+dotnet user-secrets set "Parameters:pg-password" <password>
 ```
 [Aspirate](https://github.com/prom3theu5/aspirational-manifests) can be used for Kubernetes deployment. A customized manifest is included for easy deployment.
 
