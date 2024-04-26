@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
@@ -69,9 +70,7 @@ public static class Extensions
 
         if (useOtlpExporter)
         {
-            builder.Services.Configure<OpenTelemetryLoggerOptions>(logging => logging.AddOtlpExporter());
-            builder.Services.ConfigureOpenTelemetryMeterProvider(metrics => metrics.AddOtlpExporter());
-            builder.Services.ConfigureOpenTelemetryTracerProvider(tracing => tracing.AddOtlpExporter());
+            builder.Services.AddOpenTelemetry().UseOtlpExporter();
         }
 
         // Uncomment the following lines to enable the Prometheus exporter (requires the OpenTelemetry.Exporter.Prometheus.AspNetCore package)
