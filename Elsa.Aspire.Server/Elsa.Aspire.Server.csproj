@@ -13,7 +13,7 @@
 		<PackageReference Include="Elsa.Quartz.EntityFrameworkCore.PostgreSql" Version="3.2.1" />
 		<PackageReference Include="Elsa.Workflows.Api" Version="3.2.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-		<PackageReference Include="DistributedLock.Postgres" Version="1.0.5"/>
+		<PackageReference Include="DistributedLock.Postgres" Version="1.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
