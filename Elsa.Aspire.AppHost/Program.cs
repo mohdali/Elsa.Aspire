@@ -2,9 +2,10 @@ using Aspire.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgresdb = builder.AddPostgres("pg")
-    .WithDataVolume()
-    .AddDatabase("elsadb");
+var postgres = builder.AddPostgres("postgres")
+                      .WithDataVolume(isReadOnly: false);
+
+var postgresdb = postgres.AddDatabase("elsadb");
 
 var messaging = builder.AddRabbitMQ("messaging");
 
