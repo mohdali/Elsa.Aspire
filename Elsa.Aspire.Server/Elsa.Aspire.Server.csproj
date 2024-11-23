@@ -7,12 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Elsa" Version="3.2.1" />
-		<PackageReference Include="Elsa.EntityFrameworkCore.PostgreSql" Version="3.2.1" />
-		<PackageReference Include="Elsa.MassTransit.RabbitMq" Version="3.2.1" />
-		<PackageReference Include="Elsa.Quartz.EntityFrameworkCore.PostgreSql" Version="3.2.1" />
-		<PackageReference Include="Elsa.Workflows.Api" Version="3.2.1" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+		<PackageReference Include="Elsa" Version="3.2.3" />
+		<PackageReference Include="Elsa.EntityFrameworkCore.PostgreSql" Version="3.2.3" />
+		<PackageReference Include="Elsa.MassTransit.RabbitMq" Version="3.2.3" />
+		<PackageReference Include="Elsa.Quartz.EntityFrameworkCore.PostgreSql" Version="3.2.3" />
+		<PackageReference Include="Elsa.Workflows.Api" Version="3.2.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
 		<PackageReference Include="DistributedLock.Postgres" Version="1.2.0" />
 	</ItemGroup>
 
