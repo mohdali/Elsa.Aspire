@@ -99,6 +99,7 @@ var app = builder.Build();
 
 // Configure web application's middleware pipeline.
 app.UseCors();
+app.MapHealthChecks("/health");
 app.UseRouting(); // Required for SignalR.
 app.UseAuthentication();
 app.UseAuthorization();

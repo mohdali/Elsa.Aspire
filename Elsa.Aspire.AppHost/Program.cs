@@ -13,6 +13,7 @@ var messaging = builder.AddRabbitMQ("messaging")
 
 var server = builder.AddProject<Projects.Elsa_Aspire_Server>("elsaserver")
         .WithReplicas(2)
+        .WithHttpHealthCheck("/health")
         .WithReference(postgresdb)
         .WithReference(messaging)
         .WaitFor(postgresdb)
