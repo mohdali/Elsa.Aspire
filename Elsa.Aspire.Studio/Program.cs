@@ -6,6 +6,7 @@ using Elsa.Studio.Login.HttpMessageHandlers;
 using Elsa.Studio.Shell.Extensions;
 using Elsa.Studio.Workflows.Extensions;
 using Elsa.Studio.Workflows.Designer.Extensions;
+using Elsa.Studio.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,11 +24,19 @@ builder.Services.AddServerSideBlazor(options =>
 });
 
 // Register shell services and modules.
+var backendApiConfig = new BackendApiConfig
+{
+    ConfigureBackendOptions = options => configuration.GetSection("Backend").Bind(options),
+    ConfigureHttpClientBuilder = options =>
+    {
+        options.AuthenticationHandler = typeof(AuthenticatingApiHttpMessageHandler);
+    },
+};
+
+// Register shell services and modules.
 builder.Services.AddCore();
 builder.Services.AddShell(options => configuration.GetSection("Shell").Bind(options));
-builder.Services.AddRemoteBackend(
-    elsaClient => elsaClient.AuthenticationHandler = typeof(AuthenticatingApiHttpMessageHandler),
-    options => configuration.GetSection("Backend").Bind(options));
+builder.Services.AddRemoteBackend(backendApiConfig);
 builder.Services.AddLoginModule();
 builder.Services.AddDashboardModule();
 builder.Services.AddWorkflowsModule();
