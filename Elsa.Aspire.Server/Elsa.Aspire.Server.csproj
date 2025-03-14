@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Aspire.Keycloak.Authentication" Version="9.1.0-preview.1.25121.10" />
 		<PackageReference Include="Elsa" Version="3.3.4" />
 		<PackageReference Include="Elsa.EntityFrameworkCore.PostgreSql" Version="3.3.4" />
 		<PackageReference Include="Elsa.MassTransit.RabbitMq" Version="3.3.4" />

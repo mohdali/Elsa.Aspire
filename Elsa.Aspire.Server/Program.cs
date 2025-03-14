@@ -9,6 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+builder.Services.AddAuthentication()
+                .AddKeycloakJwtBearer(
+                    serviceName: "keycloak",
+                    realm: "Elsa",
+                    options =>
+                    {
+                        options.Audience = "ElsaServer";
+                        options.RequireHttpsMetadata = false;
+                    });
+
 builder.Services.AddElsa(elsa =>
 {
     // Configure Management layer to use EF Core.
@@ -41,7 +51,7 @@ builder.Services.AddElsa(elsa =>
     });
 
     // Configure ASP.NET authentication/authorization.
-    elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
+    //elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
 
     // Expose Elsa API endpoints.
     elsa.UseWorkflowsApi();

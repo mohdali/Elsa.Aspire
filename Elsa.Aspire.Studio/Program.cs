@@ -7,6 +7,11 @@ using Elsa.Studio.Shell.Extensions;
 using Elsa.Studio.Workflows.Extensions;
 using Elsa.Studio.Workflows.Designer.Extensions;
 using Elsa.Studio.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.IdentityModel.Tokens.Jwt;
+using Elsa.Aspire.Studio;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +34,7 @@ var backendApiConfig = new BackendApiConfig
     ConfigureBackendOptions = options => configuration.GetSection("Backend").Bind(options),
     ConfigureHttpClientBuilder = options =>
     {
-        options.AuthenticationHandler = typeof(AuthenticatingApiHttpMessageHandler);
+        options.AuthenticationHandler = typeof(AuthorizationHandler);
     },
 };
 
@@ -37,10 +42,27 @@ var backendApiConfig = new BackendApiConfig
 builder.Services.AddCore();
 builder.Services.AddShell(options => configuration.GetSection("Shell").Bind(options));
 builder.Services.AddRemoteBackend(backendApiConfig);
-builder.Services.AddLoginModule();
+builder.Services.AddKeycloakModule();
 builder.Services.AddDashboardModule();
 builder.Services.AddWorkflowsModule();
 
+
+var oidcScheme = OpenIdConnectDefaults.AuthenticationScheme;
+
+builder.Services.AddAuthentication(oidcScheme)
+                .AddKeycloakOpenIdConnect("keycloak", realm: "Elsa", oidcScheme, options =>
+                {
+                    options.ClientId = "ElsaServer";
+                    options.ResponseType = OpenIdConnectResponseType.Code;
+                    //options.Scope.Add("elsa-client");
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters.NameClaimType = JwtRegisteredClaimNames.Name;
+                    options.SaveTokens = true;
+                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+
+builder.Services.AddCascadingAuthenticationState();
 
 // Configure SignalR.
 builder.Services.AddSignalR(options =>
@@ -64,6 +86,9 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 app.MapBlazorHub();
+
+app.MapKeycloakLogin();
+
 app.MapFallbackToPage("/_Host");
 
 app.Run();
