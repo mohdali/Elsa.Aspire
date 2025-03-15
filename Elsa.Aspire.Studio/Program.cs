@@ -1,8 +1,6 @@
 using Elsa.Studio.Core.BlazorServer.Extensions;
 using Elsa.Studio.Dashboard.Extensions;
 using Elsa.Studio.Extensions;
-using Elsa.Studio.Login.BlazorServer.Extensions;
-using Elsa.Studio.Login.HttpMessageHandlers;
 using Elsa.Studio.Shell.Extensions;
 using Elsa.Studio.Workflows.Extensions;
 using Elsa.Studio.Workflows.Designer.Extensions;
@@ -11,7 +9,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.IdentityModel.Tokens.Jwt;
-using Elsa.Aspire.Studio;
+using Elsa.Studio.Keycloak.HttpMessageHandlers;
+using Elsa.Studio.Keycloak.Externsions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,7 +33,7 @@ var backendApiConfig = new BackendApiConfig
     ConfigureBackendOptions = options => configuration.GetSection("Backend").Bind(options),
     ConfigureHttpClientBuilder = options =>
     {
-        options.AuthenticationHandler = typeof(AuthorizationHandler);
+        options.AuthenticationHandler = typeof(KeycloakAuthorizationHandler);
     },
 };
 
@@ -45,24 +44,6 @@ builder.Services.AddRemoteBackend(backendApiConfig);
 builder.Services.AddKeycloakModule();
 builder.Services.AddDashboardModule();
 builder.Services.AddWorkflowsModule();
-
-
-var oidcScheme = OpenIdConnectDefaults.AuthenticationScheme;
-
-builder.Services.AddAuthentication(oidcScheme)
-                .AddKeycloakOpenIdConnect("keycloak", realm: "Elsa", oidcScheme, options =>
-                {
-                    options.ClientId = "ElsaServer";
-                    options.ResponseType = OpenIdConnectResponseType.Code;
-                    //options.Scope.Add("elsa-client");
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters.NameClaimType = JwtRegisteredClaimNames.Name;
-                    options.SaveTokens = true;
-                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
-
-builder.Services.AddCascadingAuthenticationState();
 
 // Configure SignalR.
 builder.Services.AddSignalR(options =>

@@ -1,3 +1,4 @@
+using Elsa;
 using Elsa.EntityFrameworkCore.Extensions;
 using Elsa.EntityFrameworkCore.Modules.Management;
 using Elsa.EntityFrameworkCore.Modules.Runtime;
@@ -43,16 +44,18 @@ builder.Services.AddElsa(elsa =>
                 });
     });
 
-    // Default Identity features for authentication/authorization.
-    elsa.UseIdentity(identity =>
-    {
-        identity.TokenOptions = options => options.SigningKey = "sufficiently-large-secret-signing-key"; // This key needs to be at least 256 bits long.
-        identity.UseAdminUserProvider();
-    });
+    //// Default Identity features for authentication/authorization.
+    //elsa.UseIdentity(identity =>
+    //{
+    //    identity.TokenOptions = options => options.SigningKey = "sufficiently-large-secret-signing-key"; // This key needs to be at least 256 bits long.
+    //    identity.UseAdminUserProvider();
+    //});
 
-    // Configure ASP.NET authentication/authorization.
+    //// Configure ASP.NET authentication/authorization.
     //elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
 
+    EndpointSecurityOptions.DisableSecurity();
+    
     // Expose Elsa API endpoints.
     elsa.UseWorkflowsApi();
 

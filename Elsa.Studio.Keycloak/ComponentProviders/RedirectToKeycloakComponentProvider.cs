@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Elsa.Studio.Keycloak.ComponentProviders;
 
-public class RedirectToLoginUnauthorizedComponentProvider : IUnauthorizedComponentProvider
+public class RedirectToKeycloakComponentProvider : IUnauthorizedComponentProvider
 {
     public RenderFragment GetUnauthorizedComponent()
     {

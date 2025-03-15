@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Elsa.Studio.Keycloak.Externsions;
 
 public static class EndpointRouteBuilderExtensions
 {
@@ -16,7 +16,7 @@ public static class EndpointRouteBuilderExtensions
         group.MapGet("/login", () => TypedResults.Challenge(new AuthenticationProperties { RedirectUri = "/" }))
             .AllowAnonymous();
 
-        group.MapPost("/logout", () => TypedResults.SignOut(new AuthenticationProperties { RedirectUri = "/" },
+        group.MapGet("/logout", () => TypedResults.SignOut(new AuthenticationProperties { RedirectUri = "/" },
             [CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme]));
 
         return group;
