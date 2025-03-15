@@ -4,6 +4,7 @@ using Elsa.EntityFrameworkCore.Modules.Management;
 using Elsa.EntityFrameworkCore.Modules.Runtime;
 using Elsa.Extensions;
 using Medallion.Threading.Postgres;
+using Microsoft.AspNetCore.Authorization;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,9 +17,11 @@ builder.Services.AddAuthentication()
                     realm: "Elsa",
                     options =>
                     {
-                        options.Audience = "ElsaServer";
+                        options.Audience = "account";
                         options.RequireHttpsMetadata = false;
                     });
+
+builder.Services.AddScoped<IAuthorizationHandler, KeycloakAuthorizationHandler>();
 
 builder.Services.AddElsa(elsa =>
 {
@@ -44,18 +47,18 @@ builder.Services.AddElsa(elsa =>
                 });
     });
 
+
     //// Default Identity features for authentication/authorization.
     //elsa.UseIdentity(identity =>
     //{
-    //    identity.TokenOptions = options => options.SigningKey = "sufficiently-large-secret-signing-key"; // This key needs to be at least 256 bits long.
+    //    //identity.TokenOptions = options => options.SigningKey = "sufficiently-large-secret-signing-key"; // This key needs to be at least 256 bits long.
     //    identity.UseAdminUserProvider();
     //});
 
     //// Configure ASP.NET authentication/authorization.
     //elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
-
-    EndpointSecurityOptions.DisableSecurity();
     
+
     // Expose Elsa API endpoints.
     elsa.UseWorkflowsApi();
 
