@@ -28,7 +28,7 @@ namespace Elsa.Studio.Keycloak.Services
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 
             // Otherwise, return the authentication state.
-            var identity = new ClaimsIdentity(claims, "jwt");
+            var identity = new ClaimsIdentity(claims, "jwt", "name", "role");
             var user = new ClaimsPrincipal(identity);
 
             return new AuthenticationState(user);
