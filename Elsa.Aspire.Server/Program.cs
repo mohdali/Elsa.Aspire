@@ -3,11 +3,25 @@ using Elsa.EntityFrameworkCore.Modules.Management;
 using Elsa.EntityFrameworkCore.Modules.Runtime;
 using Elsa.Extensions;
 using Medallion.Threading.Postgres;
-using System.Configuration;
+using Microsoft.AspNetCore.Authorization;
+using Elsa.Workflows.Runtime.Distributed.Extensions;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+
+builder.Services.AddAuthentication()
+                .AddKeycloakJwtBearer(
+                    serviceName: "keycloak",
+                    realm: "Elsa",
+                    options =>
+                    {
+                        options.Audience = "account";
+                        options.RequireHttpsMetadata = false;
+                    });
+
+builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
 
 builder.Services.AddElsa(elsa =>
 {
@@ -22,7 +36,7 @@ builder.Services.AddElsa(elsa =>
         runtime.UseEntityFrameworkCore(ef =>
             ef.UsePostgreSql(builder.Configuration.GetConnectionString("elsadb")!));
 
-        runtime.UseMassTransitDispatcher();
+        runtime.UseDistributedRuntime();
 
         runtime.DistributedLockProvider = _ =>
             new PostgresDistributedSynchronizationProvider(builder.Configuration.GetConnectionString("elsadb")!, 
@@ -33,15 +47,10 @@ builder.Services.AddElsa(elsa =>
                 });
     });
 
-    // Default Identity features for authentication/authorization.
-    elsa.UseIdentity(identity =>
+    elsa.UseDistributedCache(distributedCaching =>
     {
-        identity.TokenOptions = options => options.SigningKey = "sufficiently-large-secret-signing-key"; // This key needs to be at least 256 bits long.
-        identity.UseAdminUserProvider();
+        distributedCaching.UseMassTransit();
     });
-
-    // Configure ASP.NET authentication/authorization.
-    elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
 
     // Expose Elsa API endpoints.
     elsa.UseWorkflowsApi();

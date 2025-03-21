@@ -7,12 +7,26 @@ The application consists of:
 - [Elsa Server](https://github.com/elsa-workflows/elsa-core) Running in two node using `MassTransitDispatcher` for distributed management
 - PostgreSQL database for persistence
 - RabbitMQ for server node communication
+- Keycloak for authentication
+
+## Keycloak
+
+Keycloak is configured with sample realm and client for the application. The realm and client configuration can be found in `Realms` directory under `Elsa.Aspire.AppHost`.
+
+When redirected to Keyclok login page for the first time, simply register a new user and use the registered users for subsequent logins.
+
+Elsa uses FastEndpoints with Permissions for authorization. For this demo purpose, an `IClaimsTransformation` is used to add `*` permission to authenticated users.
+
+## Postgres
 
 With the latest Aspire preview, database passwords need to be consistent between app launches. Set the Postgres password in the secrets as below.
 (See [Persist data using volumes](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/persist-data-volumes))
 ```
 dotnet user-secrets set "Parameters:postgres-password" <password>
 ```
+
+## K8s Deployment
+
 [Aspirate](https://github.com/prom3theu5/aspirational-manifests) can be used for Kubernetes deployment. A customized manifest is included for easy deployment.
 
 Inside `Elsa.Aspire.AppHost` Porject, run below command to generate deployment files:

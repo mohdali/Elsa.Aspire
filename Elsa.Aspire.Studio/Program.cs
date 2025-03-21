@@ -1,12 +1,16 @@
 using Elsa.Studio.Core.BlazorServer.Extensions;
 using Elsa.Studio.Dashboard.Extensions;
 using Elsa.Studio.Extensions;
-using Elsa.Studio.Login.BlazorServer.Extensions;
-using Elsa.Studio.Login.HttpMessageHandlers;
 using Elsa.Studio.Shell.Extensions;
 using Elsa.Studio.Workflows.Extensions;
 using Elsa.Studio.Workflows.Designer.Extensions;
 using Elsa.Studio.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.IdentityModel.Tokens.Jwt;
+using Elsa.Studio.Keycloak.HttpMessageHandlers;
+using Elsa.Studio.Keycloak.Externsions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +33,7 @@ var backendApiConfig = new BackendApiConfig
     ConfigureBackendOptions = options => configuration.GetSection("Backend").Bind(options),
     ConfigureHttpClientBuilder = options =>
     {
-        options.AuthenticationHandler = typeof(AuthenticatingApiHttpMessageHandler);
+        options.AuthenticationHandler = typeof(KeycloakAuthorizationHandler);
     },
 };
 
@@ -37,10 +41,9 @@ var backendApiConfig = new BackendApiConfig
 builder.Services.AddCore();
 builder.Services.AddShell(options => configuration.GetSection("Shell").Bind(options));
 builder.Services.AddRemoteBackend(backendApiConfig);
-builder.Services.AddLoginModule();
+builder.Services.AddKeycloakModule();
 builder.Services.AddDashboardModule();
 builder.Services.AddWorkflowsModule();
-
 
 // Configure SignalR.
 builder.Services.AddSignalR(options =>
@@ -62,8 +65,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapBlazorHub();
+
+app.MapKeycloakLogin();
+
 app.MapFallbackToPage("/_Host");
 
 app.Run();
