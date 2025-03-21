@@ -5,6 +5,7 @@ using Elsa.Extensions;
 using Medallion.Threading.Postgres;
 using Microsoft.AspNetCore.Authorization;
 using Elsa.Workflows.Runtime.Distributed.Extensions;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,7 @@ builder.Services.AddAuthentication()
                         options.RequireHttpsMetadata = false;
                     });
 
-builder.Services.AddScoped<IAuthorizationHandler, KeycloakAuthorizationHandler>();
+builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransofrmation>();
 
 builder.Services.AddElsa(elsa =>
 {
