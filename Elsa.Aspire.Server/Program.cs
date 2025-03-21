@@ -21,7 +21,7 @@ builder.Services.AddAuthentication()
                         options.RequireHttpsMetadata = false;
                     });
 
-builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransofrmation>();
+builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
 
 builder.Services.AddElsa(elsa =>
 {
