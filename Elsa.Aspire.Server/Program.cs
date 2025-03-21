@@ -1,11 +1,10 @@
-using Elsa;
 using Elsa.EntityFrameworkCore.Extensions;
 using Elsa.EntityFrameworkCore.Modules.Management;
 using Elsa.EntityFrameworkCore.Modules.Runtime;
 using Elsa.Extensions;
 using Medallion.Threading.Postgres;
 using Microsoft.AspNetCore.Authorization;
-using System.Configuration;
+using Elsa.Workflows.Runtime.Distributed.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +35,7 @@ builder.Services.AddElsa(elsa =>
         runtime.UseEntityFrameworkCore(ef =>
             ef.UsePostgreSql(builder.Configuration.GetConnectionString("elsadb")!));
 
-        runtime.UseMassTransitDispatcher();
+        runtime.UseDistributedRuntime();
 
         runtime.DistributedLockProvider = _ =>
             new PostgresDistributedSynchronizationProvider(builder.Configuration.GetConnectionString("elsadb")!, 
@@ -47,17 +46,10 @@ builder.Services.AddElsa(elsa =>
                 });
     });
 
-
-    //// Default Identity features for authentication/authorization.
-    //elsa.UseIdentity(identity =>
-    //{
-    //    //identity.TokenOptions = options => options.SigningKey = "sufficiently-large-secret-signing-key"; // This key needs to be at least 256 bits long.
-    //    identity.UseAdminUserProvider();
-    //});
-
-    //// Configure ASP.NET authentication/authorization.
-    //elsa.UseDefaultAuthentication(auth => auth.UseAdminApiKey());
-    
+    elsa.UseDistributedCache(distributedCaching =>
+    {
+        distributedCaching.UseMassTransit();
+    });
 
     // Expose Elsa API endpoints.
     elsa.UseWorkflowsApi();
