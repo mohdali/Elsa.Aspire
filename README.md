@@ -4,7 +4,7 @@ This sample application demonstrates a configuration of [Elsa Workflows](https:/
 The application consists of:
 
 - [Elsa Studio](https://github.com/elsa-workflows/elsa-studio)
-- [Elsa Server](https://github.com/elsa-workflows/elsa-core) Running in two node using `MassTransitDispatcher` for distributed management
+- [Elsa Server](https://github.com/elsa-workflows/elsa-core) Running in two node using distributed runtime
 - PostgreSQL database for persistence
 - RabbitMQ for server node communication
 - Keycloak for authentication
