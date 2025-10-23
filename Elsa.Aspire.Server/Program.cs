@@ -2,14 +2,15 @@ using Elsa.EntityFrameworkCore.Extensions;
 using Elsa.EntityFrameworkCore.Modules.Management;
 using Elsa.EntityFrameworkCore.Modules.Runtime;
 using Elsa.Extensions;
-using Medallion.Threading.Postgres;
-using Microsoft.AspNetCore.Authorization;
 using Elsa.Workflows.Runtime.Distributed.Extensions;
+using Medallion.Threading.Postgres;
 using Microsoft.AspNetCore.Authentication;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+builder.Services.AddOpenApi();
 
 builder.Services.AddAuthentication()
                 .AddKeycloakJwtBearer(
@@ -27,7 +28,7 @@ builder.Services.AddElsa(elsa =>
 {
     // Configure Management layer to use EF Core.
     elsa.UseWorkflowManagement(management =>
-        management.UseEntityFrameworkCore( ef =>
+        management.UseEntityFrameworkCore(ef =>
         ef.UsePostgreSql(builder.Configuration.GetConnectionString("elsadb")!)));
 
     // Configure Runtime layer to use EF Core.
@@ -108,6 +109,12 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    // Accessible at /scalar (default route)
+    app.MapScalarApiReference();
+}
 
 // Configure web application's middleware pipeline.
 app.UseCors();
@@ -119,6 +126,5 @@ app.UseWorkflowsApi(); // Use Elsa API endpoints.
 app.UseWorkflows(); // Use Elsa middleware to handle HTTP requests mapped to HTTP Endpoint activities.
 app.UseWorkflowsSignalRHubs(); // Optional SignalR integration. Elsa Studio uses SignalR to receive real-time updates from the server.
 app.MapControllers(); // Map controller endpoints.
-
 
 app.Run();
