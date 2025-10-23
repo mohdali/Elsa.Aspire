@@ -4,6 +4,7 @@ using Elsa.Studio.Extensions;
 using Elsa.Studio.Shell.Extensions;
 using Elsa.Studio.Workflows.Extensions;
 using Elsa.Studio.Workflows.Designer.Extensions;
+using Elsa.Studio.Login.BlazorServer.Extensions;
 using Elsa.Studio.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -41,6 +42,7 @@ var backendApiConfig = new BackendApiConfig
 builder.Services.AddCore();
 builder.Services.AddShell(options => configuration.GetSection("Shell").Bind(options));
 builder.Services.AddRemoteBackend(backendApiConfig);
+// builder.Services.AddLoginModule(); // Commented out - causes IRefreshTokenService dependency issue
 builder.Services.AddKeycloakModule();
 builder.Services.AddDashboardModule();
 builder.Services.AddWorkflowsModule();

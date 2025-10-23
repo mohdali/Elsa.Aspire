@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet --version)",
+      "Bash(dotnet build)",
+      "Bash(dotnet run:*)",
+      "Bash(gh repo fork:*)",
+      "Bash(git remote add:*)",
+      "Bash(dotnet list:*)",
+      "Bash(findstr:*)",
+      "Bash(dotnet add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "WebSearch",
+      "WebFetch(domain:v3.elsaworkflows.io)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:stackoverflow.com)",
+      "WebFetch(domain:medium.com)",
+      "Bash(timeout:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(curl:*)",
+      "Bash(find:*)",
+      "WebFetch(domain:docs.elsaworkflows.io)",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet build:*)",
+      "Bash(cat:*)",
+      "Bash(netstat:*)",
+      "Bash(wmic:*)",
+      "Bash(tasklist:*)",
+      "Bash(cmd /c:*)",
+      "Bash(git clean:*)",
+      "Bash(dotnet new:*)",
+      "Bash(dotnet sln:*)",
+      "Bash(dotnet test:*)",
+      "Bash(git restore:*)",
+      "Bash(git rm:*)",
+      "Bash(git reset:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

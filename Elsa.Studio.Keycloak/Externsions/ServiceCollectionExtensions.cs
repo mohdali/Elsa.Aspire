@@ -17,6 +17,7 @@ using System.Security.Claims;
 
 namespace Elsa.Studio.Keycloak.Externsions;
 
+
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddKeycloakModule(this IServiceCollection services)
@@ -28,10 +29,9 @@ public static class ServiceCollectionExtensions
             .AddScoped<IFeature, Feature>()
             .AddHttpContextAccessor()
             .AddScoped<KeycloakAuthorizationHandler>()
-            .AddScoped<AuthenticatingApiHttpMessageHandler>()
             .AddScoped<AuthenticationStateProvider, KeycloakAuthenticationStateProvider>()
             .AddScoped<IUnauthorizedComponentProvider, RedirectToKeycloakComponentProvider>()
-            //.AddScoped<ICredentialsValidator, DefaultCredentialsValidator>()            
+            //.AddScoped<ICredentialsValidator, DefaultCredentialsValidator>()
             .AddSingleton<IJwtParser, BlazorServerJwtParser>()
             .AddScoped<IJwtAccessor, KeycloakJwtAccessor>();
 

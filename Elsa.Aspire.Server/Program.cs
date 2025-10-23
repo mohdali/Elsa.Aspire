@@ -2,14 +2,15 @@ using Elsa.EntityFrameworkCore.Extensions;
 using Elsa.EntityFrameworkCore.Modules.Management;
 using Elsa.EntityFrameworkCore.Modules.Runtime;
 using Elsa.Extensions;
-using Medallion.Threading.Postgres;
-using Microsoft.AspNetCore.Authorization;
 using Elsa.Workflows.Runtime.Distributed.Extensions;
+using Medallion.Threading.Postgres;
 using Microsoft.AspNetCore.Authentication;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+builder.Services.AddOpenApi();
 
 builder.Services.AddAuthentication()
                 .AddKeycloakJwtBearer(
@@ -26,8 +27,8 @@ builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformatio
 builder.Services.AddElsa(elsa =>
 {
     // Configure Management layer to use EF Core.
-    elsa.UseWorkflowManagement(management => 
-        management.UseEntityFrameworkCore( ef =>
+    elsa.UseWorkflowManagement(management =>
+        management.UseEntityFrameworkCore(ef =>
         ef.UsePostgreSql(builder.Configuration.GetConnectionString("elsadb")!)));
 
     // Configure Runtime layer to use EF Core.
@@ -39,7 +40,7 @@ builder.Services.AddElsa(elsa =>
         runtime.UseDistributedRuntime();
 
         runtime.DistributedLockProvider = _ =>
-            new PostgresDistributedSynchronizationProvider(builder.Configuration.GetConnectionString("elsadb")!, 
+            new PostgresDistributedSynchronizationProvider(builder.Configuration.GetConnectionString("elsadb")!,
                 options =>
                 {
                     options.KeepaliveCadence(TimeSpan.FromMinutes(5));
@@ -71,16 +72,16 @@ builder.Services.AddElsa(elsa =>
 
     elsa.UseQuartz(quartz => quartz.UsePostgreSql(builder.Configuration.GetConnectionString("elsadb")!));
 
-    elsa.UseMassTransit(masstransit => 
+    elsa.UseMassTransit(masstransit =>
     {
         masstransit.UseRabbitMq(builder.Configuration.GetConnectionString("messaging")!,
-            rabbitMqFeature => rabbitMqFeature.ConfigureServiceBus = bus =>
+            rabbitMqFeature => rabbitMqFeature.ConfigureTransportBus = (context, bus) =>
             {
                 bus.PrefetchCount = 4;
                 bus.Durable = true;
                 bus.AutoDelete = false;
                 bus.ConcurrentMessageLimit = 32;
-                // etc. 
+                // etc.
             }
         );
     });
@@ -100,11 +101,20 @@ builder.Services.AddCors(cors => cors
         .AllowAnyMethod()
         .WithExposedHeaders("x-elsa-workflow-instance-id"))); // Required for Elsa Studio in order to support running workflows from the designer. Alternatively, you can use the `*` wildcard to expose all headers.
 
+// Add Controllers for custom API endpoints.
+builder.Services.AddControllers();
+
 // Add Health Checks.
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    // Accessible at /scalar (default route)
+    app.MapScalarApiReference();
+}
 
 // Configure web application's middleware pipeline.
 app.UseCors();
@@ -114,7 +124,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseWorkflowsApi(); // Use Elsa API endpoints.
 app.UseWorkflows(); // Use Elsa middleware to handle HTTP requests mapped to HTTP Endpoint activities.
-app.UseWorkflowsSignalRHubs(); // Optional SignalR integration. Elsa Studio uses SignalR to receive real-time updates from the server. 
-
+app.UseWorkflowsSignalRHubs(); // Optional SignalR integration. Elsa Studio uses SignalR to receive real-time updates from the server.
+app.MapControllers(); // Map controller endpoints.
 
 app.Run();

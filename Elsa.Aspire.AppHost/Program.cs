@@ -4,7 +4,8 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var postgres = builder.AddPostgres("postgres")
          .WithDataVolume(isReadOnly: false)
-         .WithLifetime(ContainerLifetime.Persistent);
+         .WithLifetime(ContainerLifetime.Persistent)
+         .WithPgAdmin();
 
 var postgresdb = postgres.AddDatabase("elsadb");
 
