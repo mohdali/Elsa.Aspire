@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Aspire.Keycloak.Authentication" Version="9.1.0-preview.1.25121.10" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.12" />
-		<PackageReference Include="Elsa.Studio.Login.BlazorServer" Version="3.3.5" />
+		<PackageReference Include="Aspire.Keycloak.Authentication" Version="13.2.4-preview.1.26224.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.7" />
+		<PackageReference Include="Elsa.Studio.Login.BlazorServer" Version="3.6.1" />
 	</ItemGroup>
 
 </Project>

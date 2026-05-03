@@ -22,7 +22,7 @@ namespace Elsa.Studio.Keycloak.Services
 
         public ValueTask WriteTokenAsync(string name, string token)
         {
-            throw new NotImplementedException();
+            return ValueTask.CompletedTask;
         }
     }
 }

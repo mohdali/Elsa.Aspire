@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- The host renders Blazor components from Elsa packages but has no local .razor files. -->
+    <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Elsa.Studio" Version="3.3.5" />
-    <PackageReference Include="Elsa.Studio.Core.BlazorServer" Version="3.3.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.2" />
+	<PackageReference Include="Elsa.Studio" Version="3.6.1" />
+    <PackageReference Include="Elsa.Studio.Core.BlazorServer" Version="3.6.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
   </ItemGroup>
 
   <ItemGroup>

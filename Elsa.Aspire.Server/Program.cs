@@ -1,6 +1,6 @@
-using Elsa.EntityFrameworkCore.Extensions;
-using Elsa.EntityFrameworkCore.Modules.Management;
-using Elsa.EntityFrameworkCore.Modules.Runtime;
+using Elsa.Persistence.EFCore.Extensions;
+using Elsa.Persistence.EFCore.Modules.Management;
+using Elsa.Persistence.EFCore.Modules.Runtime;
 using Elsa.Extensions;
 using Medallion.Threading.Postgres;
 using Microsoft.AspNetCore.Authorization;
@@ -74,7 +74,7 @@ builder.Services.AddElsa(elsa =>
     elsa.UseMassTransit(masstransit => 
     {
         masstransit.UseRabbitMq(builder.Configuration.GetConnectionString("messaging")!,
-            rabbitMqFeature => rabbitMqFeature.ConfigureServiceBus = bus =>
+            rabbitMqFeature => rabbitMqFeature.ConfigureTransportBus = (_, bus) =>
             {
                 bus.PrefetchCount = 4;
                 bus.Durable = true;

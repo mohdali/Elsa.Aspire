@@ -13,7 +13,7 @@ namespace Elsa.Studio.Keycloak
     {
         public override ValueTask InitializeAsync(CancellationToken cancellationToken = default)
         {
-            appBarService.AddAppBarItem<Account>();
+            appBarService.AddComponent<Account>();
 
             return ValueTask.CompletedTask;
         }

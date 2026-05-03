@@ -42,7 +42,7 @@ var backendApiConfig = new BackendApiConfig
 builder.Services.AddCore();
 builder.Services.AddShell(options => configuration.GetSection("Shell").Bind(options));
 builder.Services.AddRemoteBackend(backendApiConfig);
-builder.Services.AddKeycloakModule();
+builder.Services.AddKeycloakModule(configuration);
 builder.Services.AddDashboardModule();
 builder.Services.AddWorkflowsModule();
 
@@ -64,10 +64,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapStaticAssets();
 app.MapBlazorHub().RequireAuthorization();
 
 app.MapKeycloakLogin();
