@@ -80,7 +80,7 @@ Database passwords need to be consistent between app launches when using persist
 dotnet user-secrets set "Parameters:postgres-password" "<password>" --project ./Elsa.Aspire.AppHost/Elsa.Aspire.AppHost.csproj
 ```
 
-See [Persist data using volumes](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/persist-data-volumes) for the underlying Aspire behavior.
+See [Persist data using volumes](https://aspire.dev/fundamentals/persist-data-volumes/) for the underlying Aspire behavior.
 
 ## Deployment
 
@@ -95,5 +95,3 @@ For Kubernetes, Aspire generates Helm chart artifacts. It does not currently run
 ```bash
 helm install elsa-aspire ./k8s-artifacts
 ```
-
-Aspirate is no longer the default path for this repository. It can still be useful if you specifically need its kustomize output, `apply`/`destroy` workflow, or encrypted secrets workflow.
