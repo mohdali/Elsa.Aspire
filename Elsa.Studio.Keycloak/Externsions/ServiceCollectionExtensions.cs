@@ -8,6 +8,7 @@ using Elsa.Studio.Login.BlazorServer.Extensions;
 using Elsa.Studio.Login.Contracts;
 using Elsa.Studio.Login.HttpMessageHandlers;
 using Elsa.Studio.Login.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -46,6 +47,7 @@ public static class ServiceCollectionExtensions
             .AddScoped<AuthenticatingApiHttpMessageHandler>()
             .AddScoped<AuthenticationStateProvider, KeycloakAuthenticationStateProvider>()
             .AddScoped<IUnauthorizedComponentProvider, RedirectToKeycloakComponentProvider>()
+            .AddScoped<IEndSessionService, KeycloakEndSessionService>()
             //.AddScoped<ICredentialsValidator, DefaultCredentialsValidator>()            
             .AddSingleton<IJwtParser, BlazorServerJwtParser>()
             .AddScoped<IAuthenticationProvider, JwtAuthenticationProvider>()
@@ -66,6 +68,15 @@ public static class ServiceCollectionExtensions
                 options.TokenValidationParameters.NameClaimType = JwtRegisteredClaimNames.Name;
                 options.SaveTokens = true;
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Events.OnRedirectToIdentityProviderForSignOut = async context =>
+                {
+                    var idToken = await context.HttpContext.GetTokenAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        OpenIdConnectParameterNames.IdToken);
+
+                    if (!string.IsNullOrWhiteSpace(idToken))
+                        context.ProtocolMessage.IdTokenHint = idToken;
+                };
             })
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 

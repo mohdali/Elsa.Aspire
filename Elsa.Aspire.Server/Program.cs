@@ -11,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+var keycloakEndpoint = builder.Configuration["services:keycloak:http:0"]?.TrimEnd('/');
+var keycloakIssuer = keycloakEndpoint is null ? null : $"{keycloakEndpoint}/realms/Elsa";
+
 builder.Services.AddAuthentication()
                 .AddKeycloakJwtBearer(
                     serviceName: "keycloak",
@@ -19,6 +22,8 @@ builder.Services.AddAuthentication()
                     {
                         options.Audience = "ElsaServer";
                         options.RequireHttpsMetadata = false;
+                        if (keycloakIssuer is not null)
+                            options.TokenValidationParameters.ValidIssuers = [keycloakIssuer];
                     });
 
 builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();

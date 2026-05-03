@@ -14,7 +14,7 @@ var messaging = builder.AddRabbitMQ("messaging")
         .WithLifetime(ContainerLifetime.Persistent);
 
 #pragma warning disable ASPIRECERTIFICATES001
-var keycloak = builder.AddKeycloak("keycloak")
+var keycloak = builder.AddKeycloak("keycloak", port: 18080)
         .WithoutHttpsCertificate()
         .WithDataVolume()
         .WithRealmImport("./Realms")
