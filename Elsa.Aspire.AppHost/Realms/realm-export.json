@@ -130,10 +130,27 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "https://localhost:7267/*"
+        "https://localhost:7267/*",
+        "http://localhost:5051/*"
       ],
       "webOrigins": [
-        "https://localhost:7267"
+        "https://localhost:7267",
+        "http://localhost:5051"
+      ],
+      "protocolMappers": [
+        {
+          "id": "ddb1a88b-9950-4964-946d-67b58d559411",
+          "name": "elsaserver-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "ElsaServer",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
       ],
       "notBefore": 0,
       "bearerOnly": false,

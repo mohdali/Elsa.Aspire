@@ -1,5 +1,6 @@
 ﻿using Elsa.Studio.Login.Contracts;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Elsa.Studio.Keycloak.Services
             var httpContext = httpContextAccessor.HttpContext ??
             throw new InvalidOperationException("No HttpContext available from the IHttpContextAccessor!");
 
-            return await httpContext.GetTokenAsync(name);           
+            return await httpContext.GetTokenAsync(CookieAuthenticationDefaults.AuthenticationScheme, name);
         }
 
         public ValueTask WriteTokenAsync(string name, string token)

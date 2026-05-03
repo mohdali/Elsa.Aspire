@@ -17,7 +17,7 @@ builder.Services.AddAuthentication()
                     realm: "Elsa",
                     options =>
                     {
-                        options.Audience = "account";
+                        options.Audience = "ElsaServer";
                         options.RequireHttpsMetadata = false;
                     });
 

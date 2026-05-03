@@ -9,17 +9,40 @@ The application consists of:
 - RabbitMQ for server node communication
 - Keycloak for authentication
 
+## Prerequisites
+
+- .NET 9 SDK
+- Docker
+
+This repository includes a `global.json` that pins the SDK to .NET 9. This is required because Aspire 9.1 is used by the AppHost. If multiple SDKs are installed, verify that the repository selects .NET 9:
+
+```
+dotnet --version
+```
+
+## Running locally
+
+Run the Aspire AppHost:
+
+```
+dotnet run --project ./Elsa.Aspire.AppHost/Elsa.Aspire.AppHost.csproj
+```
+
+Open the Aspire dashboard URL printed by the AppHost. From there, open the Elsa Studio resource.
+
 ## Keycloak
 
 Keycloak is configured with sample realm and client for the application. The realm and client configuration can be found in `Realms` directory under `Elsa.Aspire.AppHost`.
 
-When redirected to Keyclok login page for the first time, simply register a new user and use the registered users for subsequent logins.
+When redirected to the Keycloak login page for the first time, register a new user and use that user for subsequent logins.
 
-Elsa uses FastEndpoints with Permissions for authorization. For this demo purpose, an `IClaimsTransformation` is used to add `*` permission to authenticated users.
+The `ElsaServer` Keycloak client is configured to issue access tokens with the `ElsaServer` audience. Elsa Server validates this audience before accepting Studio API calls.
+
+Elsa uses FastEndpoints with Permissions for authorization. For demo purposes, an `IClaimsTransformation` is used to add `*` permission to authenticated users.
 
 ## Postgres
 
-With the latest Aspire preview, database passwords need to be consistent between app launches. Set the Postgres password in the secrets as below.
+Database passwords need to be consistent between app launches. Set the Postgres password in the secrets as below.
 (See [Persist data using volumes](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/persist-data-volumes))
 ```
 dotnet user-secrets set "Parameters:postgres-password" <password>

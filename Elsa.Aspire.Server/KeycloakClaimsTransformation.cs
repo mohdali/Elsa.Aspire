@@ -8,7 +8,7 @@ public class KeycloakClaimsTransformation : IClaimsTransformation
         var claimsIdentity = new ClaimsIdentity();
 
 
-        if (principal.Identity.IsAuthenticated)
+        if (principal.Identity?.IsAuthenticated == true)
         {
             var claimType = "permissions";
 

@@ -11,7 +11,7 @@ var postgresdb = postgres.AddDatabase("elsadb");
 var messaging = builder.AddRabbitMQ("messaging")
         .WithLifetime(ContainerLifetime.Persistent);
 
-var keycloak = builder.AddKeycloak("keycloak", 8080)
+var keycloak = builder.AddKeycloak("keycloak")
         .WithDataVolume()
         .WithRealmImport("./Realms")
         .WithLifetime(ContainerLifetime.Persistent);

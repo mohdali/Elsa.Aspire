@@ -36,7 +36,11 @@ public static class ServiceCollectionExtensions
             .AddScoped<IJwtAccessor, KeycloakJwtAccessor>();
 
         services
-            .AddAuthentication(oidcScheme)
+            .AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = oidcScheme;
+            })
             .AddKeycloakOpenIdConnect("keycloak", realm: "Elsa", oidcScheme, options =>
             {
                 options.ClientId = "ElsaServer";
@@ -54,4 +58,3 @@ public static class ServiceCollectionExtensions
         return services;
     }
 }
-

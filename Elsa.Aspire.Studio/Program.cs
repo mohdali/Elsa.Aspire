@@ -20,7 +20,8 @@ var configuration = builder.Configuration;
 builder.AddServiceDefaults();
 
 // Register Razor services.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options => options.Conventions.AuthorizePage("/_Host"));
+builder.Services.AddAuthorization();
 builder.Services.AddServerSideBlazor(options =>
 {
     // Register the root components.
@@ -67,11 +68,10 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapBlazorHub();
+app.MapBlazorHub().RequireAuthorization();
 
 app.MapKeycloakLogin();
 
-app.MapFallbackToPage("/_Host");
+app.MapFallbackToPage("/_Host").RequireAuthorization();
 
 app.Run();
-
