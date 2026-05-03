@@ -41,7 +41,6 @@ public static class ServiceCollectionExtensions
             });
 
         services
-            .AddScoped<IFeature, Feature>()
             .AddHttpContextAccessor()
             .AddScoped<KeycloakAuthorizationHandler>()
             .AddScoped<AuthenticatingApiHttpMessageHandler>()
